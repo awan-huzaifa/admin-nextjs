@@ -3,34 +3,25 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-
+import { loginAdmin } from '@/services/auth';
 
 export default function LoginPage() {
     const router = useRouter();
-  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    // Example credentials check
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
-  const a =2;
-    // if (response.ok) {
-    if(a==2)  {
-      // if success message 
-    //   await response.json();
-      // Redirect to the dashboard or home page
-      router.push('/dashboard/home');
-    } else {
-      
-      alert('Invalid credentials, please try again.');
+    try {
+      const response = await loginAdmin({ phone, password });
+      if (response.token) {
+        localStorage.setItem('adminToken', response.token);
+        localStorage.setItem('adminData', JSON.stringify(response.admin));
+        router.push('/dashboard/home');
+      }
+    } catch (error: any) {
+      setError(error.response?.data?.message || 'Login failed');
     }
   };
 
@@ -41,25 +32,22 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit}>
             <div className="mb-12">
               <h3 className="text-gray-800 text-3xl font-extrabold">Sign in</h3>
-              <p className="text-sm mt-4 text-gray-800">
-                New admin account:
-                <Link href="/authentication/register" className="text-purple-600 font-semibold hover:underline ml-1 whitespace-nowrap">
-                  Register here
-                </Link>
-              </p>
+              {error && (
+                <p className="text-red-500 mt-2">{error}</p>
+              )}
             </div>
 
             <div>
-              <label className="text-gray-800 text-xs block mb-2">Username</label>
+              <label className="text-gray-800 text-xs block mb-2">Phone Number</label>
               <div className="relative flex items-center">
                 <input
-                  name="username"
+                  name="phone"
                   type="text"
                   required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   className="w-full text-gray-800 text-sm border-b border-gray-300 focus:border-purple-600 px-2 py-3 outline-none"
-                  placeholder="Enter username"
+                  placeholder="Enter phone number"
                 />
               </div>
             </div>
@@ -79,15 +67,11 @@ export default function LoginPage() {
               </div>
             </div>
 
-         
-
             <div className="mt-12">
               <button type="submit" className="w-full shadow-xl py-2.5 px-4 text-sm tracking-wide rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none">
                 Sign in
               </button>
             </div>
-
-           
           </form>
         </div>
 
