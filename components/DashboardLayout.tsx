@@ -20,6 +20,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         router.push('/dashboard/pending-requests');
         break;
       // Add more cases as needed
+      case 'ServicesManagement':
+        router.push('/dashboard/services');
+        break;
+      case 'CategoriesManagement':
+        router.push('/dashboard/categories');
+        break;
+        case 'OrdersManagement':
+          router.push('/dashboard/orders');
+          break;
+          case 'UsersManagement':
+            router.push('/dashboard/users');
+            break;
     }
   };
 
@@ -63,6 +75,56 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   <span>Pending Requests</span>
                 </button>
               </li>
+
+              <li>
+                <button
+                  onClick={() => handleNavigation('ServicesManagement')}
+                  className={`w-full text-[#333] text-sm flex items-center hover:text-purple-600 transition-all ${
+                    selectedSection === 'ServicesManagement' ? 'text-purple-600' : ''
+                  }`}
+                >
+                  <ClockIcon className="w-4 h-4 mr-4" />
+                  <span>Services Management</span>
+                </button>
+              </li>
+
+              <li>
+                <button
+                  onClick={() => handleNavigation('CategoriesManagement')}
+                  className={`w-full text-[#333] text-sm flex items-center hover:text-purple-600 transition-all ${
+                    selectedSection === 'CategoriesManagement' ? 'text-purple-600' : ''
+                  }`}
+                >
+                  <ClockIcon className="w-4 h-4 mr-4" />
+                  <span>Categories Management</span>
+                </button>
+              </li>
+
+              <li>
+                <button
+                  onClick={() => handleNavigation('OrdersManagement')}
+                  className={`w-full text-[#333] text-sm flex items-center hover:text-purple-600 transition-all ${
+                    selectedSection === 'ServicesManagement' ? 'text-purple-600' : ''
+                  }`}
+                >
+                  <ClockIcon className="w-4 h-4 mr-4" />
+                  <span>Orders Management</span>
+                </button>
+              </li>
+
+              <li>
+                <button
+                  onClick={() => handleNavigation('UsersManagement')}
+                  className={`w-full text-[#333] text-sm flex items-center hover:text-purple-600 transition-all ${
+                    selectedSection === 'UsersManagement' ? 'text-purple-600' : ''
+                  }`}
+                >
+                  <ClockIcon className="w-4 h-4 mr-4" />
+                  <span>Users Management</span>
+                </button>
+              </li>
+
+
             </ul>
           </div>
 
